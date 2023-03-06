@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +19,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// criar novo usuário
+Route::post('/register', [UserController::class, 'register']);
+
+// fazer login
+Route::post('/login', [LoginController::class, 'login']);
+
+// alterar usuário
+Route::post('/updateUser', function() {
+
+});
+
+// deletar usuário
+Route::post('/deleteUser', function() {
+
 });

@@ -19,6 +19,7 @@ class CreateLojistasTable extends Migration
             $table->string('email')->unique();
             $table->string('cnpj')->unique();
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
