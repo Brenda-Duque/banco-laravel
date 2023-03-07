@@ -22,7 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // criar novo usuário
-Route::post('/register', [UserController::class, 'register']);
+Route::post('/registerUser', [UserController::class, 'register']);
 
 // fazer login
 Route::post('/login', [LoginController::class, 'login']);
