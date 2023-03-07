@@ -34,7 +34,6 @@ class Lojista extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
@@ -46,4 +45,8 @@ class Lojista extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function username() {
+        return 'cnpj';
+    }
 }

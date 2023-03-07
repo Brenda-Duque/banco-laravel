@@ -3,6 +3,8 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserLojistaController;
 use App\Http\Controllers\LoginUserController;
+use App\Http\Controllers\LoginLojistaController;
+use App\Http\Controllers\LogoutController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +35,9 @@ Route::post('/loginUser', [LoginUserController::class, 'loginUser']);
 
 // login lojista
 Route::post('/loginLojista', [LoginLojistaController::class, 'loginLojista']);
+
+// logout 
+Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');
 
 // alterar usuário
 Route::post('/updateUser', function() {
