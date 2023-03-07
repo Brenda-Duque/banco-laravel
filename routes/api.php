@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserLojistaController;
+use App\Http\Controllers\LoginUserController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -17,15 +18,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// criar novo usuário
+// create new common user
 Route::post('/registerUser', [UserController::class, 'register']);
 
-// fazer login
-Route::post('/login', [LoginController::class, 'login']);
+// create new lojista user
+Route::post('/registerLojista', [UserLojistaController::class, 'registerLojista']);
+
+// login user
+Route::post('/loginUser', [LoginUserController::class, 'loginUser']);
+
+// login lojista
+Route::post('/loginLojista', [LoginLojistaController::class, 'loginLojista']);
 
 // alterar usuário
 Route::post('/updateUser', function() {
