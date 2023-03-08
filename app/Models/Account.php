@@ -2,19 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class Lojista extends Authenticatable
+class Account extends Model
 {
-    use HasFactory, Notifiable;
-    use SoftDeletes;
-    use HasApiTokens;
+    use HasFactory;
+
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +17,10 @@ class Lojista extends Authenticatable
      */
     protected $fillable = [
         'client_id',
-        'user_type'
+        'type',
+        'agency',
+        'account',
+        'balance'
     ];
 
     /**

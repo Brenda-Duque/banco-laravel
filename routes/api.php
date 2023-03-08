@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\AccountController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -29,14 +30,8 @@ Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 
 // logout 
-Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->post('/logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');
 
-// alterar usuário
-Route::post('/updateUser', function() {
+// transfer
+Route::middleware('auth:sanctum')->post('/transfer', [AccountController::class, 'transfer']);
 
-});
-
-// deletar usuário
-Route::post('/deleteUser', function() {
-
-});

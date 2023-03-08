@@ -15,10 +15,11 @@ class CrateAccountTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('client_id');
-            $table->string('user_type');
-            $table->unique(['client_id', 'user_type']);
-            $table->string('balance');
+            $table->unsignedBigInteger('client_id')->unique();
+            $table->string('type');
+            $table->string('agency');
+            $table->string('account');
+            $table->float('balance')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

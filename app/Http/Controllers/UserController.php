@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lojista;
+use App\Models\Account;
 use App\Models\User;
 use Auth;
 use DB;
@@ -13,9 +14,9 @@ class UserController extends Controller
 {
     function register(Request $request) {
         $request->validate([
-            'type' => ['required', 'string', 'in:common,shopkeeper'],
-            'name' => ['required', 'min:7', 'max:255', 'string'],
-            'email' => ['required', 'email', 'unique:users', 'string'],
+            'type'     => ['required', 'string', 'in:common,shopkeeper'],
+            'name'     => ['required', 'min:7', 'max:255', 'string'],
+            'email'    => ['required', 'email', 'unique:users', 'string'],
             'cpf_cnpj' => ['required', 'unique:users', 'string'],
             'password' => ['required', 'min:8', 'max:32', 'string'],
         ]);
@@ -39,16 +40,28 @@ class UserController extends Controller
 
         try {
             $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
+                'name'     => $request->name,
+                'email'    => $request->email,
                 'cpf_cnpj' => $request->cpf_cnpj,
                 'password' => bcrypt($request->password),
-                'type' => $request->type,
+                'type'     => $request->type,
+            ]);
+
+            do {    
+                $number = rand(1, 9999999);
+                $number_account = str_pad($number, 4, 0, STR_PAD_LEFT);
+            } while (Account::where('account', $number_account)->count() > 0);
+
+            $account = Account::create([
+                'client_id' => $user->id,
+                'type'      => $request->type,
+                'agency'    => '0001',
+                'account'   => $number_account,
             ]);
 
             if ($request->type == "shopkeeper") {
                 $lojista = Lojista::create([
-                    'user_id' => $user->id,
+                    'user_id'      => $user->id,
                     'company_name' => $request->company_name,
                     'trading_name' => $request->trading_name,
                 ]);
@@ -60,11 +73,17 @@ class UserController extends Controller
 
             $token = $user->createToken('token')->plainTextToken;
 
-            return response()->json(['message' => 'Registration done successfully.', 'data' => $user,'access_token' => $token]);
+            return response()->json([
+                'message'      => 'Registration done successfully.', 
+                'data'         => $user, 
+                'account'      => $account, 
+                'access_token' => $token]);
+        
         } catch (\Exception $e) {
+            
             DB::rollback();
 
-            return ["message" => "Error when registering."];
+            return ["message" => "Error when registering, `$e`."];
         }
    }
 

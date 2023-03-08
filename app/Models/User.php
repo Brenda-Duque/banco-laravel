@@ -23,6 +23,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'type',
         'email',
         'password',
         'cpf_cnpj',
@@ -48,5 +49,9 @@ class User extends Authenticatable
 
     public function lojista() {
         return $this->hasOne(Lojista::class, 'user_id', 'id');
+    }
+
+    public function account() {
+        return $this->hasOne(Account::class, 'client_id', 'id');
     }
 }

@@ -33,10 +33,12 @@ class LoginController extends Controller
             //cria um novo token
             $token = $user->createToken('API TOKEN')->plainTextToken;
     
-            return response()->json(['message' => 'Connected successfully.','user' => $user,'access_token' => $token]);
+            return response()->json([
+                'message'      => 'Connected successfully.',
+                'user'         => $user,
+                'access_token' => $token]);
             
         } catch (\Exception $e) {
-            throw $e;
             return ["message" => "Login error,  `$e->message`."];
         }
     }
