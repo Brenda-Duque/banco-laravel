@@ -17,8 +17,9 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('cpf')->unique();
+            $table->string('cpf_cnpj')->unique();
             $table->string('password');
+            $table->enum('type', ['common', 'shopkeeper']);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes(); // funciona como status de ativo/inativo do usuário.

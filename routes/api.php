@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserLojistaController;
-use App\Http\Controllers\LoginUserController;
-use App\Http\Controllers\LoginLojistaController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,17 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// create new common user
-Route::post('/registerUser', [UserController::class, 'register']);
-
-// create new lojista user
-Route::post('/registerLojista', [UserLojistaController::class, 'registerLojista']);
+// create new user
+Route::post('/register', [UserController::class, 'register']);
 
 // login user
-Route::post('/loginUser', [LoginUserController::class, 'loginUser']);
-
-// login lojista
-Route::post('/loginLojista', [LoginLojistaController::class, 'loginLojista']);
+Route::post('/login', [LoginController::class, 'login']);
 
 // logout 
 Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');

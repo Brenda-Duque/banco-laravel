@@ -40,22 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api_lojista_web' => [
-            'driver' => 'session',
-            'provider' => 'lojistas',
-        ],
-
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'users',
             'hash' => false,
-        ],
-
-        'api_lojista' => [
-            'driver' => 'sanctum',
-            'provider' => 'lojistas',
-            'hash' => false,
-        ],
+        ]
     ],
 
     /*
@@ -79,11 +68,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-        ],
-        'lojistas' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Lojista::class,
-        ],
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

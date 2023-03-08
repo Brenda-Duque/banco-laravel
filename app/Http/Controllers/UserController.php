@@ -4,36 +4,68 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Lojista;
 use App\Models\User;
 use Auth;
+use DB;
 
 class UserController extends Controller
 {
     function register(Request $request) {
-
         $request->validate([
-            'name' => ['required', 'min:7', 'max:255', string],
-            'email' => ['required', 'email', 'unique:users', string],
-            'cpf' => ['required', 'unique:users', string],
-            'password' => ['required', 'min:8', 'max:32', string],
+            'type' => ['required', 'string', 'in:common,shopkeeper'],
+            'name' => ['required', 'min:7', 'max:255', 'string'],
+            'email' => ['required', 'email', 'unique:users', 'string'],
+            'cpf_cnpj' => ['required', 'unique:users', 'string'],
+            'password' => ['required', 'min:8', 'max:32', 'string'],
         ]);
 
-        // Validate CPF
-        if (!$this->validateCPF($request->cpf)) {
-            return response()->json(['message'=>'Invalid CPF.'], 400);
+        if ($request->type == 'common') {
+            if (!$this->validateCPF($request->cpf_cnpj)) {
+                return response()->json(['message'=>'Invalid CPF.'], 400);
+            }
+        } else if ($request->type == 'shopkeeper') {
+            $request->validate([
+                'company_name' => ['required', 'min:7', 'max:255', 'string'],
+                'trading_name' => ['required', 'min:7', 'max:255', 'string'],
+            ]);
+
+            if (!$this->validateCNPJ($request->cpf_cnpj)) {
+                return response()->json(['message'=>'Invalid cnpj.'], 400);
+            }
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'cpf' => $request->cpf,
-            'password' => bcrypt($request->password),
-            'status' => 1
-        ]);
+        DB::beginTransaction();
 
-        $token = $user->createToken('token')->plainTextToken;
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'cpf_cnpj' => $request->cpf_cnpj,
+                'password' => bcrypt($request->password),
+                'type' => $request->type,
+            ]);
 
-        return response()->json(['data' => $user,'access_token' => $token]);
+            if ($request->type == "shopkeeper") {
+                $lojista = Lojista::create([
+                    'user_id' => $user->id,
+                    'company_name' => $request->company_name,
+                    'trading_name' => $request->trading_name,
+                ]);
+
+                $user->lojista = $lojista;
+            }
+                
+            DB::commit();
+
+            $token = $user->createToken('token')->plainTextToken;
+
+            return response()->json(['message' => 'Registration done successfully.', 'data' => $user,'access_token' => $token]);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return ["message" => "Error when registering."];
+        }
    }
 
    function validateCPF($cpf) {
@@ -61,5 +93,41 @@ class UserController extends Controller
             }
         }
         return true;
+    }
+
+   function validateCNPJ($cnpj) {
+      
+        $cnpj = preg_replace('/[^0-9]/', '', (string) $cnpj);
+        
+        // Validate size
+        if (strlen($cnpj) != 14)
+            return false;
+
+        // Checks if all digits are the same
+        if (preg_match('/(\d)\1{13}/', $cnpj))
+            return false;	
+
+        // Validates first check digit
+        for ($i = 0, $j = 5, $soma = 0; $i < 12; $i++)
+        {
+            $soma += $cnpj[$i] * $j;
+            $j = ($j == 2) ? 9 : $j - 1;
+        }
+
+        $resto = $soma % 11;
+
+        if ($cnpj[12] != ($resto < 2 ? 0 : 11 - $resto))
+            return false;
+
+        // Validate second check digit
+        for ($i = 0, $j = 6, $soma = 0; $i < 13; $i++)
+        {
+            $soma += $cnpj[$i] * $j;
+            $j = ($j == 2) ? 9 : $j - 1;
+        }
+
+        $resto = $soma % 11;
+
+        return $cnpj[13] == ($resto < 2 ? 0 : 11 - $resto);
     }
 }

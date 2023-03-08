@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Lojista;
 
-class User extends Authenticatable
+class Lojista extends Authenticatable
 {
     use HasFactory, Notifiable;
     use SoftDeletes;
@@ -22,10 +22,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'cpf_cnpj',
+        'client_id',
+        'user_type'
     ];
 
     /**
@@ -35,6 +33,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'remember_token',
+        'balance'
     ];
 
     /**
@@ -45,8 +44,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function lojista() {
-        return $this->hasOne(Lojista::class, 'user_id', 'id');
-    }
 }

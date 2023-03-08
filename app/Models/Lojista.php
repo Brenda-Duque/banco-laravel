@@ -22,10 +22,7 @@ class Lojista extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'cnpj',
+        'company_name', 'trading_name', 'user_id',
     ];
 
     /**
@@ -45,8 +42,4 @@ class Lojista extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function username() {
-        return 'cnpj';
-    }
 }

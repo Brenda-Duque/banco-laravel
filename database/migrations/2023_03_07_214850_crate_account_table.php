@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLojistasTable extends Migration
+class CrateAccountTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateLojistasTable extends Migration
      */
     public function up()
     {
-        Schema::create('lojistas', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->unique();
-            $table->string('company_name')->unique();
-            $table->string('trading_name');
+            $table->string('client_id');
+            $table->string('user_type');
+            $table->unique(['client_id', 'user_type']);
+            $table->string('balance');
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateLojistasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lojistas');
+        Schema::dropIfExists('accounts');
     }
 }
