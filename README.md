@@ -1,62 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Banco-Laravel
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+##Usuários
 
-## About Laravel
+Comuns: 
+- Nome;
+- email;
+- cpf;
+- senha.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Lojistas:
+- Nome;
+- Razão social;
+- cpnj;
+- email;
+- senha.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+CPF/CNPJ e e-mails devem ser únicos no sistema. 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Cadastrar usuário
+Só pode escolher dois tipos de usuário: comum ou lojista. Dependendo do tipo a ser escolhido é requerido cpf ou cnpj, razão social.
 
-## Learning Laravel
+- Usuário comum:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+POST /register
+```json
+{
+  "type": "common",
+  "name": "Nome completo",
+  "email": "seuemail@gmail.com",
+  "cpf_cnpj": "23565292091",
+  "password": "Senha@123"
+}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Usuário lojista:
 
-## Laravel Sponsors
+POST /register
+```json
+{
+  "type": "shopkeeper",
+  "name": "Nome fantasia",
+  "company_name": "Brenda Pic",
+  "email": "emaillojista@gmail.com",
+  "cpf_cnpj": "99869272000190",
+  "password": "Senha@123"
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Ao cadastrar o usuário retorna o número da conta e agência.
 
-### Premium Partners
+## Login
+Para o login é necessário informar o cpf e a senha.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+POST /login
+```json
+{
+  "cpf_cnpj": "23565292091",
+  "password": "Senha@123"
+}
+```
 
-## Contributing
+## Transferências
+Para trannsferir dinheiro, apenas os usuários do tipo "common" são permitidos, os do tipo "shopkeeper" apenas recebem.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+POST /transfer
+```json
+{
+  "value": "5",
+  "account_transfer": "7804491"
+}
+```
 
-## Code of Conduct
+## Tratamento de erros
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Cadastro: 
+- Não é possível cadastrar caso um cpf ou email já tenha sido cadastrado (ERRO: 400);
+- Todos os campos são obrigatórios e do tipo string (ERRO: 400);
+- Gera token
 
-## Security Vulnerabilities
+Login: 
+- CPF/CNPJ e senha são obrigatŕoias (ERRO: 400);
+- Caso o cpf/cnpj e a senha não forem iguais ao que está cadastrado não permite entrar (ERRO: 401);
+- Gera token.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Transferência:
+- Todos os campos são obrigatórios (ERRO: 400);
+- Só transfere se o usuário estivr logado de fato;
+- Apenas contas do tipo "common" podem realizar transferências;
+- Contas do tipo "shopkeeper" só recebem, não fazem transferências (ERRO: 402);
+- É necessário informar o valor e a conta destino;
+- Só transfere se tiver dinheiro na conta e tiver saldo suficiente e a conta destino for encontrada (ERRO: 422).
 
-## License
+## Padrão MVC
+Model - View - Controller
+- Uniformidade na estrutura do software;
+- As aplicações ficam mais fácies de manter;
+- Facilita a documentação.
+## Ferramentas utilizadas
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# banco-laravel
+<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/800px-PHP-logo.svg.png" width="150"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="250"></p>
+<p align="center"><img src="https://s2.glbimg.com/WcVu50imQYm5GntBKg-J5RkOAQA=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/y/M/W5GFw3Qh2YwD5XkhUM2Q/2012-04-17-mysql-logos.gif" width="250"></p>

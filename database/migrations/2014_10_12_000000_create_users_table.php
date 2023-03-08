@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->enum('type', ['common', 'shopkeeper']);
             $table->rememberToken();
             $table->timestamps();
-            $table->softDeletes(); // funciona como status de ativo/inativo do usuário.
+            $table->softDeletes();
         });
     
 

@@ -11,12 +11,12 @@ use DB;
 class AccountController extends Controller
 {
     function transfer(Request $request) {
-        // return auth()->user(); 404 - not found, 403 - nao logado, 422 - nao tem saldo, 400/402-shopekkeper
+       
         try{
             $request->validate([
                 'value'            => ['required', 'numeric'],
                 'account_transfer' => ['required', 'string']
-            ]);
+            ], 400);
     
             $accountFrom = auth()->user()->account()->firstOrFail();
                 
@@ -24,7 +24,6 @@ class AccountController extends Controller
                 'message' => 'This type of user is not allowed to perform transfers.'
             ], 402);
                 
-            // verifica se o saldo é suficiente
             if ($accountFrom->balance < $request->value) return response()->json([
                 'message' => 'Insufficient funds.'
             ], 422);

@@ -13,23 +13,24 @@ use DB;
 class UserController extends Controller
 {
     function register(Request $request) {
+
         $request->validate([
             'type'     => ['required', 'string', 'in:common,shopkeeper'],
             'name'     => ['required', 'min:7', 'max:255', 'string'],
             'email'    => ['required', 'email', 'unique:users', 'string'],
             'cpf_cnpj' => ['required', 'unique:users', 'string'],
             'password' => ['required', 'min:8', 'max:32', 'string'],
-        ]);
+        ], 400);
 
         if ($request->type == 'common') {
             if (!$this->validateCPF($request->cpf_cnpj)) {
                 return response()->json(['message'=>'Invalid CPF.'], 400);
             }
+
         } else if ($request->type == 'shopkeeper') {
             $request->validate([
-                'company_name' => ['required', 'min:7', 'max:255', 'string'],
-                'trading_name' => ['required', 'min:7', 'max:255', 'string'],
-            ]);
+                'company_name' => ['required', 'min:7', 'max:255', 'string']
+            ], 400);
 
             if (!$this->validateCNPJ($request->cpf_cnpj)) {
                 return response()->json(['message'=>'Invalid cnpj.'], 400);
@@ -39,14 +40,16 @@ class UserController extends Controller
         DB::beginTransaction();
 
         try {
+        
             $user = User::create([
                 'name'     => $request->name,
                 'email'    => $request->email,
                 'cpf_cnpj' => $request->cpf_cnpj,
-                'password' => bcrypt($request->password),
+                'password' => bcrypt($request->password), //encrypt the password
                 'type'     => $request->type,
             ]);
 
+            // generates an account number and checks if it already exists
             do {    
                 $number = rand(1, 9999999);
                 $number_account = str_pad($number, 4, 0, STR_PAD_LEFT);
@@ -62,8 +65,7 @@ class UserController extends Controller
             if ($request->type == "shopkeeper") {
                 $lojista = Lojista::create([
                     'user_id'      => $user->id,
-                    'company_name' => $request->company_name,
-                    'trading_name' => $request->trading_name,
+                    'company_name' => $request->company_name
                 ]);
 
                 $user->lojista = $lojista;

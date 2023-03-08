@@ -23,15 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// create new user
 Route::post('/register', [UserController::class, 'register']);
 
-// login user
 Route::post('/login', [LoginController::class, 'login']);
 
-// logout 
 Route::middleware('auth:sanctum')->post('/logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');
 
-// transfer
 Route::middleware('auth:sanctum')->post('/transfer', [AccountController::class, 'transfer']);
 
