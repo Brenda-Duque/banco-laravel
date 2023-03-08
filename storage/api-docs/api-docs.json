@@ -1,0 +1,279 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Your super  ApplicationAPI",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/transfer": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Transfer",
+                "description": "Transfer",
+                "operationId": "authTransfer",
+                "requestBody": {
+                    "description": "transfer between accounts, only regular type users",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "Token",
+                                    "value",
+                                    "account"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "14|YbQD8XXY4zSIOtR27xPj9jrM8w1GKekuDNKBx7OD"
+                                    },
+                                    "value": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "5"
+                                    },
+                                    "account": {
+                                        "type": "string",
+                                        "example": "3383585"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": {
+                                                "status": "1",
+                                                "message": "Transfer successfully completed.",
+                                                "balance": 5
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign in",
+                "description": "Login by cpf/cnpj, password",
+                "operationId": "authLogin",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "cpf/cnpj",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "cpf/cnpj": {
+                                        "type": "string",
+                                        "format": "cpf/cnpj",
+                                        "example": "29713750055"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "testandoA@0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": {
+                                                "message": "Connected successfully.",
+                                                "user": {
+                                                    "id": 2,
+                                                    "name": "Teste com usuário 7",
+                                                    "email": "testeuser7@gmail.com",
+                                                    "cpf_cnpj": "23415352080",
+                                                    "type": "common"
+                                                },
+                                                "access_token": "11|n7KGUoRPMbekio2MePI6E9uBuJzAZEL2d3OyMYja"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout",
+                "description": "Logout",
+                "operationId": "authLogout",
+                "requestBody": {
+                    "description": "Pass token",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "11|n7KGUoRPMbekio2MePI6E9uBuJzAZEL2d3OyMYja"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": {
+                                                "message": "You have successfully logged out."
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign up",
+                "description": "Register user",
+                "operationId": "authRegister",
+                "requestBody": {
+                    "description": "Pass your personal or business data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "name",
+                                    "email",
+                                    "cpf_cnpj",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "example": "common"
+                                    },
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "Brenda Duque"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "brenda@hotmail.com"
+                                    },
+                                    "cpf_cnpj": {
+                                        "type": "string",
+                                        "format": "cpf",
+                                        "example": "03754666061"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "testandoA@0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "json",
+                                            "example": {
+                                                "message": "Registration sdone successfully.",
+                                                "data": {
+                                                    "name": "Teste com usuário 8",
+                                                    "email": "testeuser00@gmail.com",
+                                                    "cpf_cnpj": "92710459043",
+                                                    "type": "common",
+                                                    "updated_at": "2023-03-08T10:31:18.000000Z",
+                                                    "created_at": "2023-03-08T10:31:18.000000Z",
+                                                    "id": 5
+                                                },
+                                                "account": {
+                                                    "client_id": 5,
+                                                    "type": "common",
+                                                    "agency": "0001",
+                                                    "account": "8433981",
+                                                    "updated_at": "2023-03-08T10:31:18.000000Z",
+                                                    "created_at": "2023-03-08T10:31:18.000000Z",
+                                                    "id": 5
+                                                },
+                                                "access_token": "7|srbcVwAECShMYCh9ClgqPfOFAz6GrptHZ0FQSoXs"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

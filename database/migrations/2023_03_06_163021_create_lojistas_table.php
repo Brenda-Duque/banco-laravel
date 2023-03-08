@@ -17,7 +17,6 @@ class CreateLojistasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->string('company_name')->unique();
-            $table->string('trading_name');
             $table->timestamps();
             $table->softDeletes();
 
