@@ -137,7 +137,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             
             DB::rollback();
-
+            $error = $e->getMessage();
             return ["message" => "Error when registering, `$e`."];
         }
    }

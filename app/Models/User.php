@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Lojista;
+use App\Models\Notification;
 
 class User extends Authenticatable
 {
@@ -53,5 +54,9 @@ class User extends Authenticatable
 
     public function account() {
         return $this->hasOne(Account::class, 'client_id', 'id');
+    }
+
+    public function notification() {
+        return $this->hasOne(Notification::class, 'client_id', 'id');
     }
 }

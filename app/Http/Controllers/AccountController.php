@@ -53,6 +53,7 @@ class AccountController extends Controller
             ]);
     
             $accountFrom = auth()->user()->account()->firstOrFail();
+            $notification = auth()->user()->notification()->firstOrFail();
                 
             if ($accountFrom->type == 'shopkeeper') return response()->json([
                 'message' => 'This type of user is not allowed to perform transfers.'
@@ -72,12 +73,19 @@ class AccountController extends Controller
             $accountTo->balance += $request->value;
             $accountTo->save();
 
+            if ($notification) {
+                $msg = "You have just performed a transfer from `$request->value`";
+                if ($notification->notification == 'email') {
+                    mail($accountFrom->email, "Transaction",$msg);
+                }
+            }
+
             DB::commit();
-    
+            
             return response()->json([
                 'status'       => '1',
                 'message'      => 'Transfer successfully completed.',
-                'balance'      => $accountFrom->balance,
+                'balance'      => $accountFrom->balance
             ]);
         } catch (\Exception $e) {
             DB::rollback();

@@ -183,6 +183,68 @@
                 }
             }
         },
+        "/notification": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "notification",
+                "description": "Notification setting",
+                "operationId": "authNotification",
+                "requestBody": {
+                    "description": "Pass type notification",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token",
+                                    "notification"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "2|aw47QBCpWZDy8lFumqk4aGbuNAb9rnBJBMApsGCL"
+                                    },
+                                    "notification": {
+                                        "type": "string",
+                                        "example": "email"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": {
+                                                "message": "Notification setting successfully saved.",
+                                                "data": {
+                                                    "client_id": 1,
+                                                    "notification": "email",
+                                                    "updated_at": "2023-03-09T16:34:17.000000Z",
+                                                    "created_at": "2023-03-09T16:34:17.000000Z",
+                                                    "id": 2
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/register": {
             "post": {
                 "tags": [
