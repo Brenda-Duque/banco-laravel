@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\Users\UserServiceSing;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -37,12 +38,23 @@ class LogoutController extends Controller
      *     )
      * )
      */
+
+     protected $UserServiceSing;
+ 
+ 
+     public function __construct(
+        UserServiceSing $userServiceSing
+ 
+     )
+     {
+         $this->userServiceSing = $userServiceSing;
+ 
+     }
+
     function logout(Request $request) {
+        $data = $this->userServiceSing->userLogout($request);
 
-        Auth::user()->tokens()->delete();
+        return $data;
 
-        return response()->json([
-            'message' => 'You have successfully logged out.'
-        ]);
     }
 }
