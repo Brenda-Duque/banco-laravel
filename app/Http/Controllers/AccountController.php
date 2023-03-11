@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\Accounts\AccountServiceAction;
 use Illuminate\Http\Request;
-use App\Models\Account;
-use App\Models\User;
 use Auth;
-use DB;
+
 
 class AccountController extends Controller
 {
@@ -44,56 +43,24 @@ class AccountController extends Controller
      *     )
      * )
      */
+
+     protected $AccountServiceAction;
+ 
+ 
+     public function __construct(
+        AccountServiceAction $accountServiceAction
+ 
+     )
+     {
+         $this->accountServiceAction = $accountServiceAction;
+ 
+     }
+
     function transfer(Request $request) {
+
+        $data = $this->accountServiceAction->transfer($request);
+
+        return $data;
        
-        try{
-            $request->validate([
-                'value'            => ['required', 'numeric'],
-                'account_transfer' => ['required', 'string']
-            ]);
-    
-            $accountFrom = auth()->user()->account()->firstOrFail();
-            $notification = auth()->user()->notification()->firstOrFail();
-                
-            if ($accountFrom->type == 'shopkeeper') return response()->json([
-                'message' => 'This type of user is not allowed to perform transfers.'
-            ], 402);
-                
-            if ($accountFrom->balance < $request->value) return response()->json([
-                'message' => 'Insufficient funds.'
-            ], 422);
-    
-            $accountTo = Account::where('account', $request['account_transfer'])->firstOrFail();
-                
-            DB::beginTransaction();
-    
-            $accountFrom->balance -= $request->value;
-            $accountFrom->save();
-
-            $accountTo->balance += $request->value;
-            $accountTo->save();
-
-            if ($notification) {
-                $msg = "You have just performed a transfer from `$request->value`";
-                if ($notification->notification == 'email') {
-                    mail($accountFrom->email, "Transaction",$msg);
-                }
-            }
-
-            DB::commit();
-            
-            return response()->json([
-                'status'       => '1',
-                'message'      => 'Transfer successfully completed.',
-                'balance'      => $accountFrom->balance
-            ]);
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            $error = $e->getMessage();
-            return response()->json([
-                'message' => "Error when transferring. `$error`"
-            ],400);
-        }
     }
 }

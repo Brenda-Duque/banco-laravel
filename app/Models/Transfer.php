@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notification extends Model
+class Transfer extends Model
 {
     use HasFactory;
 
@@ -16,8 +16,9 @@ class Notification extends Model
      * @var array
      */
     protected $fillable = [
-        'client_id',
-        'notification'
+        'value', 
+        'user_payer_id',
+        'user_payee_id'
     ];
 
     /**

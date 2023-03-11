@@ -22,7 +22,8 @@ class Lojista extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'company_name', 'user_id',
+        'company_name', 
+        'user_id'
     ];
 
     /**
