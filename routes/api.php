@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\NotificationController;
+use App\Notifications\InvoicePaid;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,6 @@ Route::middleware('auth:sanctum')->post('/logout', [LogoutController::class, 'lo
 Route::middleware('auth:sanctum')->post('/transfer', [AccountController::class, 'transfer']);
 
 Route::middleware('auth:sanctum')->post('/notification', [NotificationController::class, 'notification']);
+
+Route::get('/invoice', [InvoicePaid::class, 'show']);
 

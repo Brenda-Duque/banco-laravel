@@ -2,6 +2,7 @@
 
 namespace App\Service\Accounts;
 
+use App\Notifications\InvoicePaid;
 use App\Service\Accounts\AccountQuery;
 use App\Models\Account;
 use App\Models\User;
@@ -43,7 +44,11 @@ class AccountServiceAction {
             $accountTo = Account::where('account', $request->account_transfer)->firstOrFail();
 
             $transfer = $this->accountQuery->transfer($accountFrom, $accountTo, $request->value);
-                
+    
+            
+            $user = User::where('id', $accountFrom->client_id)->firstOrFail();
+            $user->value = $request->value;
+            $user->notify(new InvoicePaid($user));
             return $transfer;
            
         } catch (\Exception $e) {
