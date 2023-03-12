@@ -50,20 +50,15 @@ class LoginController extends Controller
 
      protected $UserServiceSing;
  
- 
      public function __construct(
         UserServiceSing $userServiceSing
- 
      )
      {
          $this->userServiceSing = $userServiceSing;
- 
      }
 
     function login(Request $request) {
-
         $data = $this->userServiceSing->userLogin($request);
-
         return $data;
     }
 }

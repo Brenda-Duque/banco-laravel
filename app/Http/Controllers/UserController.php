@@ -65,21 +65,15 @@ class UserController extends Controller
 
      protected $UserServiceRegister;
  
- 
      public function __construct(
         UserServiceRegister $userServiceRegister
- 
      )
      {
          $this->userServiceRegister = $userServiceRegister;
- 
      }
 
     function register(Request $request) {
-
         $data = $this->userServiceRegister->registerUser($request);
-
         return $data;
-
    }
 }

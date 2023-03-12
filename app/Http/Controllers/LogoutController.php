@@ -41,20 +41,15 @@ class LogoutController extends Controller
 
      protected $UserServiceSing;
  
- 
      public function __construct(
         UserServiceSing $userServiceSing
- 
      )
      {
          $this->userServiceSing = $userServiceSing;
- 
      }
 
     function logout(Request $request) {
         $data = $this->userServiceSing->userLogout($request);
-
         return $data;
-
     }
 }

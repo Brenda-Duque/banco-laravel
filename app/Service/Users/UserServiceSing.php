@@ -2,11 +2,24 @@
 
 namespace App\Service\Users;
 
+use App\Repository\User\ConsultUserRepository;
 use App\Models\Lojista;
 use App\Models\User;
 use Auth;
 
 class UserServiceSing {
+
+    protected $ConsultUserRepository;
+ 
+ 
+    public function __construct(
+       ConsultUserRepository $consultUserRepository
+
+    )
+    {
+        $this->consultUserRepository = $consultUserRepository;
+
+    }
 
     function userLogin($request) {
         try{
@@ -20,10 +33,10 @@ class UserServiceSing {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
     
-            $user = User::where('cpf_cnpj', $request['cpf_cnpj'])->firstOrFail();
+            $user = $this->consultUserRepository->getUserDocument($request['cpf_cnpj']);
 
             if ($user->type == 'shopkeeper') {
-                $lojista = Lojista::where('user_id', $user->id)->firstOrFail();
+                $lojista = $this->consultUserRepository->getTypeShopkeeperId($user->id);
                 $user->lojista = $lojista;
             }
 
@@ -36,15 +49,20 @@ class UserServiceSing {
             
         } catch (\Exception $e) {
             $error = $e->getMessage();
-            return ["message" => "Login error, `$e`.", ];
+            return ["message" => "Login error, `$error`.", ];
         }
     }
 
     function userLogout($request) {
-        Auth::user()->tokens()->delete();
-
-        return response()->json([
-            'message' => 'You have successfully logged out.'
-        ]);
+      try{
+          Auth::user()->tokens()->delete();
+  
+          return response()->json([
+              'message' => 'You have successfully logged out.'
+          ]);
+      } catch (\Exception $e) {
+        $error = $e->getMessage();
+        return ["message" => "Login error, `$error`.", ];
+      }
     }
 }

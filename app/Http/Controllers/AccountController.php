@@ -46,10 +46,8 @@ class AccountController extends Controller
 
      protected $AccountServiceAction;
  
- 
      public function __construct(
         AccountServiceAction $accountServiceAction
- 
      )
      {
          $this->accountServiceAction = $accountServiceAction;
@@ -57,10 +55,7 @@ class AccountController extends Controller
      }
 
     function transfer(Request $request) {
-
         $data = $this->accountServiceAction->transfer($request);
-
         return $data;
-       
     }
 }

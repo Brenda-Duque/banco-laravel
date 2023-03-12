@@ -3,25 +3,23 @@
 namespace App\Service\Users;
 
 use App\Service\Validations\identificationDocument;
-use App\Service\Users\UserQuery;
+use App\Repository\User\UserRepository;
 use Auth;
 
 
 class UserServiceRegister {
 
-    protected $UserQuery;
     protected $identificationDocument;
+    protected $UserRepository;
  
  
     public function __construct(
-       UserQuery $userQuery,
-       identificationDocument $identificationDocument
-
+       identificationDocument $identificationDocument,
+       UserRepository $userRepository
     )
     {
-        $this->userQuery = $userQuery;
         $this->identificationDocument = $identificationDocument;
-
+        $this->userRepository = $userRepository;
     }
 
     function registerUser($request) {
@@ -51,7 +49,7 @@ class UserServiceRegister {
     
         try {
             
-            $user = $this->userQuery->createUser($request);
+            $user = $this->userRepository->createUser($request);
 
             return $user;
         

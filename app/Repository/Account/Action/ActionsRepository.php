@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Service\Accounts;
+namespace App\Repository\Account\Action;
 
 use App\Models\Transfer;
 use App\Models\Account;
+use App\Models\Lojista;
 use App\Models\User;
 use Auth;
 use DB;
 
-class AccountQuery {
+class ActionsRepository {
 
     function transfer($accountFrom, $accountTo, $value) {
-
         try {
             
             DB::beginTransaction();
@@ -36,11 +36,9 @@ class AccountQuery {
             DB::rollback();
             return $e->getMessage();
         }
-
     }
 
     function extract($accountFrom, $accountTo, $value) {
-
         try{
     
             DB::beginTransaction();
@@ -48,7 +46,7 @@ class AccountQuery {
             $insertExtract = Transfer::create([
                 'user_payer_id' => $accountFrom->client_id,
                 'user_payee_id' => $accountTo->client_id,
-                'value' => $value
+                'value'         => $value
                 
             ]);
             DB::commit();
@@ -57,6 +55,9 @@ class AccountQuery {
             DB::rollback();
             return $e->getMessage();
         }
+    }
+
+    function deposit () {
 
     }
 }
