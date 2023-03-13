@@ -9,15 +9,6 @@ use App\Models\User;
 
 class UserRegisterTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $this->assertTrue(true);
-    }
 
     public function test_columns_user_common() {
 
@@ -60,25 +51,25 @@ class UserRegisterTest extends TestCase
 
     public function test_register_user_common() {
 
-        $user = new User();
+       $user = new User();
 
-        $attributes = [
-            'type'     => 'common',
-            'name'     => 'Brenda Duque',
-            'email'    => 'brendaduqueee@gmail.com',
-            'cpf_cnpj' => '38530525094',
-            'password' => 'Areia@2023',
-        ];
-        User::create($attributes);
+       $attributes = [
+           'type'     => 'common',
+           'name'     => 'Brenda Duque',
+           'email'    => 'brendaduqueee@gmail.com',
+           'cpf_cnpj' => '38530525094',
+           'password' => 'Areia@2023',
+       ];
+       User::create($attributes);
 
-        $this->assertDatabaseHas('users', [
-            'type'     => 'common',
-            'name'     => 'Brenda Duque',
-            'email'    => 'brendaduqueee@gmail.com',
-            'cpf_cnpj' => '38530525094',
-            'password' => 'Areia@2023',
-        ]);
+       $this->assertDatabaseHas('users', [
+           'type'     => 'common',
+           'name'     => 'Brenda Duque',
+           'email'    => 'brendaduqueee@gmail.com',
+           'cpf_cnpj' => '38530525094',
+           'password' => 'Areia@2023',
+       ]);
 
-        $this->assertTrue(true);
+       $this->assertTrue(true);
     }
 }
