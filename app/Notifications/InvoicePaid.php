@@ -43,7 +43,7 @@ class InvoicePaid extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->userTransfer->name.'You have just received a transfer from R$'. $this->userTransfer->value)
+                    ->line($this->userTransfer->name.' You have just received a transfer of R$'. $this->userTransfer->value)
                     ->line('Thank you for using our application!');
     }
 

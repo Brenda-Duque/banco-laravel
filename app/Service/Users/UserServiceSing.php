@@ -57,7 +57,7 @@ class UserServiceSing {
           ]);
       } catch (\Exception $e) {
         $error = $e->getMessage();
-        return ["message" => "Login error, `$error`.", ];
+        return ["message" => "Logout error, `$error`.", ];
       }
     }
 }

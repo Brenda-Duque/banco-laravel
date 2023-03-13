@@ -59,7 +59,7 @@ class UserRepository {
         }catch (\Exception $e) {
             DB::rollback();
             $error = $e->getMessage();
-            return ["message" => "Error when registering, `$e`."];
+            return ["message" => "Error when registering, `$error`."];
         }
     }
 
