@@ -55,6 +55,10 @@ class AccountController extends Controller
      }
 
     function transfer(Request $request) {
+        $request->validate([
+            'value'            => ['required', 'numeric'],
+            'account_transfer' => ['required', 'string']
+        ]);
         $data = $this->accountServiceAction->transfer($request);
         return $data;
     }

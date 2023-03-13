@@ -39,11 +39,6 @@ class AccountServiceAction {
     function transfer($request) {
 
         try{
-            $request->validate([
-                'value'            => ['required', 'numeric'],
-                'account_transfer' => ['required', 'string']
-            ]);
-    
             // payer
             $accountFrom = $this->consultUserRepository->getUserLogged();
                 

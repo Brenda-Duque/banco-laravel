@@ -23,11 +23,6 @@ class UserServiceSing {
 
     function userLogin($request) {
         try{
-
-            $request->validate([
-                'cpf_cnpj' => ['required', 'string'],
-                'password' => ['required', 'string'],
-            ]);
             
             if (!Auth::attempt($request->only('cpf_cnpj', 'password'))) {
                 return response()->json(['message' => 'Unauthorized'], 401);

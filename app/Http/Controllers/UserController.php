@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\Validations\identificationDocument;
 use App\Service\Users\UserServiceRegister;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -63,16 +64,41 @@ class UserController extends Controller
      * )
      */
 
+     protected $identificationDocument;
      protected $UserServiceRegister;
  
      public function __construct(
+        identificationDocument $identificationDocument,
         UserServiceRegister $userServiceRegister
      )
      {
+        $this->identificationDocument = $identificationDocument;
          $this->userServiceRegister = $userServiceRegister;
      }
 
     function register(Request $request) {
+        $request->validate([
+            'type'     => ['required', 'string', 'in:common,shopkeeper'],
+            'name'     => ['required', 'min:7', 'max:255', 'string'],
+            'email'    => ['required', 'email', 'unique:users', 'string'],
+            'cpf_cnpj' => ['required', 'unique:users', 'string'],
+            'password' => ['required', 'min:8', 'max:32', 'string'],
+        ]);
+
+        if ($request->type == 'common') {
+            if (!$this->identificationDocument->validateCPF($request->cpf_cnpj)) {
+                return response()->json(['message'=>'Invalid CPF.'], 422);
+            }
+    
+        } else if ($request->type == 'shopkeeper') {
+            $request->validate([
+                'company_name' => ['required', 'min:7', 'max:255', 'string']
+            ]);
+    
+            if (!$this->identificationDocument->validateCNPJ($request->cpf_cnpj)) {
+                return response()->json(['message'=>'Invalid cnpj.'], 422);
+            }
+        }
         $data = $this->userServiceRegister->registerUser($request);
         return $data;
    }

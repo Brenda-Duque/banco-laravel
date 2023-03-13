@@ -58,6 +58,10 @@ class LoginController extends Controller
      }
 
     function login(Request $request) {
+        $request->validate([
+            'cpf_cnpj' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ]);
         $data = $this->userServiceSing->userLogin($request);
         return $data;
     }
