@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Service\Users\UserServiceSing;
+use App\Service\Users\UserServiceSign;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -48,13 +48,13 @@ class LoginController extends Controller
      * )
      */
 
-     protected $UserServiceSing;
+     protected $UserServiceSign;
  
      public function __construct(
-        UserServiceSing $userServiceSing
+        UserServiceSign $userServiceSign
      )
      {
-         $this->userServiceSing = $userServiceSing;
+         $this->userServiceSign = $userServiceSign;
      }
 
     function login(Request $request) {
@@ -62,7 +62,7 @@ class LoginController extends Controller
             'cpf_cnpj' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
-        $data = $this->userServiceSing->userLogin($request);
+        $data = $this->userServiceSign->userLogin($request);
         return $data;
     }
 }

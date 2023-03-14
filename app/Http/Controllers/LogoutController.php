@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Service\Users\UserServiceSing;
+use App\Service\Users\UserServiceSign;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -39,17 +39,17 @@ class LogoutController extends Controller
      * )
      */
 
-     protected $UserServiceSing;
+     protected $UserServiceSign;
  
      public function __construct(
-        UserServiceSing $userServiceSing
+        UserServiceSign $userServiceSign
      )
      {
-         $this->userServiceSing = $userServiceSing;
+         $this->userServiceSign = $userServiceSign;
      }
 
     function logout(Request $request) {
-        $data = $this->userServiceSing->userLogout($request);
+        $data = $this->userServiceSign->userLogout($request);
         return $data;
     }
 }

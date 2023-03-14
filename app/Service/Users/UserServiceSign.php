@@ -7,7 +7,7 @@ use App\Models\Lojista;
 use App\Models\User;
 use Auth;
 
-class UserServiceSing {
+class UserServiceSign {
 
     protected $ConsultUserRepository;
  

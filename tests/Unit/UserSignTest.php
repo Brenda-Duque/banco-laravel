@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Service\Users\UserServiceSing;
+use App\Service\Users\UserServiceSign;
 
 class UserSignTest extends TestCase
 {
