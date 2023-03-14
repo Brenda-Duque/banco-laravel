@@ -21,12 +21,13 @@ class UserController extends Controller
      *    required=true,
      *    description="Pass your personal or business data",
      *    @OA\JsonContent(
-     *       required={"type","name", "email", "cpf_cnpj", "password"},
+     *       required={"type","name", "email", "cpf_cnpj", "password", "transaction_password"},
      *       @OA\Property(property="type", type="string", example="common"),
      *       @OA\Property(property="nome", type="string", example="Brenda Duque"),
      *       @OA\Property(property="email", type="string", format="email", example="brenda@hotmail.com"),
      *       @OA\Property(property="cpf_cnpj", type="string", format="cpf", example="03754666061"),
-     *       @OA\Property(property="password", type="string", format="password", example="testandoA@0")
+     *       @OA\Property(property="password", type="string", format="password", example="testandoA@0"),
+     *       @OA\Property(property="transaction_password", type="string", format="password", example="123456")
      *    ),
      * ),
      * @OA\Response(
@@ -83,6 +84,7 @@ class UserController extends Controller
             'email'    => ['required', 'email', 'unique:users', 'string'],
             'cpf_cnpj' => ['required', 'unique:users', 'string'],
             'password' => ['required', 'min:8', 'max:32', 'string'],
+            'transaction_password' => ['required', 'min:6', 'max:6', 'string']
         ]);
 
         if ($request->type == 'common') {

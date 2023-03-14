@@ -20,10 +20,11 @@ class AccountController extends Controller
      *    required=true,
      *    description="transfer between accounts, only regular type users",
      *    @OA\JsonContent(
-     *       required={"Token", "value", "account"},
+     *       required={"Token", "value", "account", "transaction_password"},
      *       @OA\Property(property="token", type="string", example="14|YbQD8XXY4zSIOtR27xPj9jrM8w1GKekuDNKBx7OD"),
      *       @OA\Property(property="value", type="float", example="5"),
-     *       @OA\Property(property="account", type="string", example="3383585")
+     *       @OA\Property(property="account", type="string", example="3383585"),
+     *       @OA\Property(property="transaction_password", type="string", format="password", example="123456")
      *    ),
      * ),
      * @OA\Response(
@@ -57,7 +58,8 @@ class AccountController extends Controller
     function transfer(Request $request) {
         $request->validate([
             'value'            => ['required', 'numeric'],
-            'account_transfer' => ['required', 'string']
+            'account_transfer' => ['required', 'string'],
+            'transaction_password' => ['required', 'string']
         ]);
         $data = $this->accountServiceAction->transfer($request);
         return $data;

@@ -31,12 +31,12 @@ class UserServiceSign {
             $user = $this->consultUserRepository->getUserDocument($request['cpf_cnpj']);
 
             if ($user->type == 'shopkeeper') {
-                $lojista = $this->consultUserRepository->getTypeShopkeeperId($user->id);
+                $lojista = $this->consultUserRepository->getTypeShopkeeperById($user->id);
                 $user->lojista = $lojista;
             }
 
             $token = $user->createToken('API TOKEN')->plainTextToken;
-            unset($user->password, $user->created_at, $user->updated_at, $user->deleted_at);
+            unset($user->password, $user->created_at, $user->updated_at, $user->deleted_at, $user->transaction_password);
             return response()->json([
                 'message'      => 'Connected successfully.',
                 'user'         => $user,

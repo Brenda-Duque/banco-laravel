@@ -22,7 +22,8 @@
                                 "required": [
                                     "Token",
                                     "value",
-                                    "account"
+                                    "account",
+                                    "transaction_password"
                                 ],
                                 "properties": {
                                     "token": {
@@ -37,6 +38,11 @@
                                     "account": {
                                         "type": "string",
                                         "example": "3383585"
+                                    },
+                                    "transaction_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
                                     }
                                 },
                                 "type": "object"
@@ -202,7 +208,8 @@
                                     "name",
                                     "email",
                                     "cpf_cnpj",
-                                    "password"
+                                    "password",
+                                    "transaction_password"
                                 ],
                                 "properties": {
                                     "type": {
@@ -227,6 +234,11 @@
                                         "type": "string",
                                         "format": "password",
                                         "example": "testandoA@0"
+                                    },
+                                    "transaction_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
                                     }
                                 },
                                 "type": "object"

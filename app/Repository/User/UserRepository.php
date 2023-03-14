@@ -21,6 +21,7 @@ class UserRepository {
                     'cpf_cnpj' => $request->cpf_cnpj,
                     'password' => bcrypt($request->password), //encrypt the password
                     'type'     => $request->type,
+                    'transaction_password' => bcrypt($request->transaction_password)
                 ]);
 
             if ($request->type == "shopkeeper") {
@@ -44,8 +45,9 @@ class UserRepository {
                     'account'   => $number_account,
                 ]);
 
-                                $token = $user->createToken('token')->plainTextToken;
-                                unset($user->password);
+             $token = $user->createToken('token')->plainTextToken;
+             unset($user->password);
+             unset($user->transaction_password);
         
             DB::commit();
 

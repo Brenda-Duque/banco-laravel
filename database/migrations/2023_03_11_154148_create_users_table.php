@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('cpf_cnpj')->unique();
             $table->string('password');
             $table->enum('type', ['common', 'shopkeeper']);
+            $table->string('transaction_password');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

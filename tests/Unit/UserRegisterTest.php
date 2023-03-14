@@ -19,7 +19,8 @@ class UserRegisterTest extends TestCase
             'name',
             'email',
             'cpf_cnpj',
-            'password'
+            'password',
+            'transaction_password'
         ];
         $arrayCompared = array_diff($expected, $user->getFillable());
 
@@ -35,7 +36,8 @@ class UserRegisterTest extends TestCase
             'name',
             'email',
             'cpf_cnpj',
-            'password'
+            'password',
+            'transaction_password'
         ];
 
         $expected_ = [
@@ -59,6 +61,7 @@ class UserRegisterTest extends TestCase
            'email'    => 'brendaduqueee@gmail.com',
            'cpf_cnpj' => '38530525094',
            'password' => 'Areia@2023',
+           'transaction_password' => '123456'
        ];
        User::create($attributes);
 
@@ -68,6 +71,7 @@ class UserRegisterTest extends TestCase
            'email'    => 'brendaduqueee@gmail.com',
            'cpf_cnpj' => '38530525094',
            'password' => 'Areia@2023',
+           'transaction_password' => '123456'
        ]);
 
        $this->assertTrue(true);

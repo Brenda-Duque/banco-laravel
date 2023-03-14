@@ -9,7 +9,7 @@ class UserSignTest extends TestCase
 {
     public function test_login() {
         $body = [
-            'cpf_cnpj' => '52734403005',
+            'cpf_cnpj' => '62780371064',
             'password' => 'testandoA@0',
         ];
         $response = $this->post('/api/login', $body);

@@ -10,6 +10,7 @@ use App\Service\Accounts\AccountQuery;
 use App\Notifications\InvoicePaid;
 use App\Models\Account;
 use App\Models\User;
+use Hash;
 use Auth;
 use DB;
 
@@ -40,7 +41,13 @@ class AccountServiceAction {
 
         try{
             // payer
-            $accountFrom = $this->consultUserRepository->getUserLogged();
+            $accountFrom = $this->consultUserRepository->getUserLoggedAccount();
+
+            $dataUser = $this->consultUserRepository->getUserById($accountFrom->client_id);
+
+            if (!Hash::check($request->transaction_password, $dataUser->transaction_password)) return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
                 
             if ($accountFrom->type == 'shopkeeper') return response()->json([
                 'message' => 'This type of user is not allowed to perform transfers.'
@@ -55,7 +62,7 @@ class AccountServiceAction {
 
             $transfer = $this->actionsRepository->transfer($accountFrom, $accountTo, $request->value);
     
-            $user = $this->consultUserRepository->getUserId($accountFrom->client_id);
+            $user = $this->consultUserRepository->getUserById($accountFrom->client_id);
             $user->value = $request->value;
 
             $this->notificationRepository->notificationTransferEmail($user);

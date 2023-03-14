@@ -10,12 +10,12 @@ use DB;
 
 class ConsultUserRepository {
 
-    function getUserId($id) {
-        $userId = User::where('id', $id)->firstOrFail();
-        return $userId;
+    function getUserById($id) {
+        $user = User::where('id', $id)->firstOrFail();
+        return $user;
     }
 
-    function getTypeShopkeeperId($id) {
+    function getTypeShopkeeperById($id) {
         $getShopkeeper = Lojista::where('user_id', $id)->firstOrFail();
         return $getShopkeeper;
     }
@@ -25,8 +25,8 @@ class ConsultUserRepository {
         return $getUser;
     }
 
-    function getUserLogged() {
-        $logged = auth()->user()->account()->firstOrFail();
-        return $logged;
+    function getUserLoggedAccount() {
+        $loggedAccount = auth()->user()->account()->firstOrFail();
+        return $loggedAccount;
     }
 }
